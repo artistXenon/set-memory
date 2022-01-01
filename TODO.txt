@@ -1,0 +1,30 @@
+test case
+
+test: {
+    prop: {
+        name,
+        set: [
+            {
+                name: string,
+                isTested: bool
+            }
+        ]
+    },
+    sets: [
+        ['', '', ''],
+        ['', '', ''],
+        ['', '', '']
+    ]
+}
+
+
+
+create case
+read case
+delete case
+
+
+create case/set
+read case/set
+update case/set
+delete case/set
