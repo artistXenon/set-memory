@@ -1,12 +1,14 @@
 test case
 
-test: {
+case: {
     prop: {
         name,
+        description,
         set: [
             {
                 name: string,
-                isTested: bool
+                isTested: bool,
+                isDisclosed: bool
             }
         ]
     },
@@ -14,6 +16,9 @@ test: {
         ['', '', ''],
         ['', '', ''],
         ['', '', '']
+    ],
+    tests: [
+        
     ]
 }
 
@@ -26,5 +31,4 @@ delete case
 
 create case/set
 read case/set
-update case/set
 delete case/set
