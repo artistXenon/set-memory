@@ -32,3 +32,7 @@ delete case
 create case/set
 read case/set
 delete case/set
+
+
+
+db: cases, sets, tests
