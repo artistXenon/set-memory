@@ -11,11 +11,18 @@ const connection = mysql.createConnection({
 
 
 // with placeholder
-connection.query(
-  'SELECT * FROM cases',
-  [],
-  function(err, results) {
-    console.log(err)
-    console.log(results);
+(async () => {
+  try {
+    let id = 2
+      await connection
+          .execute(
+              'DELETE FROM `cases` WHERE id=?', 
+              [ id ])
+      return true
   }
-);
+  catch (e) {
+      console.log(e)
+      return false
+  }
+
+})()

@@ -1,18 +1,14 @@
-const connection = require('./connection')
+const {
+    createCase, readCases, deleteCase,
+    createSet, readSets, deleteSet,
+    updateTest, flushTest
+} = require('./connection')
 
 
 
 
 module.exports = {
-    createCase,
-    readCase,
-    deleteCase,
-
-    createSet,
-    readSet,
-    deleteSet,
-    
-    readTest,
-    updateTest,
-    deleteTest
+    createCase, readCases, deleteCase,
+    createSet, readSets, deleteSet,
+    updateTest, flushTest
 }
