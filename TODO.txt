@@ -23,6 +23,12 @@ case: {
 
 
 create case
+{
+	"name": "tested",
+	"desc": "description explaining what this test is for",
+	"sets": [{ "name": "set1" }, { "name": "set2" }],
+	"tests": [""]
+}
 read case
 delete case
 

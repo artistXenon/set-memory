@@ -2,7 +2,7 @@ const r = require('express').Router()
 const { createSet, readSets, deleteSet } = require('../db')
 
 
-r.get('/', (q, s) => {
+r.get('/', async (q, s) => {
     //query test size
     try {
         const rows = await readSets(/* TODO: case id */)
@@ -20,7 +20,7 @@ r.get('/', (q, s) => {
     }
 })
 
-r.put('/', (q, s) => {
+r.put('/', async (q, s) => {
     try {
         const id = await createSet(/* TODO: body */)
         return s
@@ -37,7 +37,7 @@ r.put('/', (q, s) => {
     }
 })
 
-r.delete('/:id', (q, s) => {
+r.delete('/:id', async (q, s) => {
     try {
         const id = await deleteSet(/* TODO: body */)
         return s

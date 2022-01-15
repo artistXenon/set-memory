@@ -23,13 +23,18 @@ r.get('/', async (q, s) => {
     }
 })
 
-r.put('/', (q, s) => {
+r.put('/', async (q, s) => {
     try {
-        const id = await createCase(/* TODO: body */)
+        const name = q.body?.name
+        const desc = q.body?.desc ?? ''
+        const sets = q.body?.sets
+        const tests = q.body?.tests
+        if (!name || !sets || !tests) throw new Error('malformatted body')
+        const [{ insertId }] = await createCase(name, desc, JSON.stringify(sets), JSON.stringify(tests))
         return s
             .status(200)
             .json({
-                result: id,
+                result: insertId,
                 success: true
             })
     }
@@ -40,13 +45,13 @@ r.put('/', (q, s) => {
     }
 })
 
-r.delete('/:id', (q, s) => {
+r.delete('/:id', async (q, s) => {
     try {
-        const id = await deleteCase(/* TODO: body */)
+        const success = await deleteCase(q.params.id)
+        if (!success) throw new Error()
         return s
             .status(200)
             .json({
-                result: id,
                 success: true
             })
     }

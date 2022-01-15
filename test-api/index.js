@@ -1,8 +1,8 @@
 const r = require('express').Router()
-const { updateTest, flushTest } = require('../db')
+const { readTest, updateTest, flushTest } = require('../db')
 
 
-r.get('/', (q, s) => {
+r.get('/', async (q, s) => {
     //query test size
     try {
         const rows = await readSets(/* TODO: case id */)
@@ -20,7 +20,7 @@ r.get('/', (q, s) => {
     }
 })
 
-r.put('/:setId', (q, s) => {
+r.put('/:setId', async (q, s) => {
     try {
         const id = await createSet(/* TODO: body */)
         return s
@@ -37,7 +37,7 @@ r.put('/:setId', (q, s) => {
     }
 })
 
-r.delete('/:id', (q, s) => {
+r.delete('/:id', async (q, s) => {
     //deleteSet
     s.status(200).send('delete set')
 })

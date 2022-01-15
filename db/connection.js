@@ -17,13 +17,14 @@ const config = /**production */ false ?
 
 const connection = mysql.createConnection(config)
 
-const createCase = async (name, desc, set) => {
+const createCase = async (name, desc, sets, tests) => {
     try {
-        const { insertId } = await connection
-            .execute(
-                'INSERT INTO `cases` (name, description, set_json) VALUES (?, ?, ?)', 
-                [ name, desc, set ])
-        return insertId
+        const result = await connection
+            .promise()
+            .query(
+                'INSERT INTO `cases` (name, description, set_json, test_json) VALUES (?, ?, ?, ?)', 
+                [ name, desc, sets, tests ])
+        return result
     }
     catch (e) {
         console.log(e)
@@ -35,7 +36,7 @@ const readCases = async () => {
     try {
         const [ rows ] = await connection
             .promise()
-            .query('SELECT name, description, set_json, id FROM `cases`')
+            .query('SELECT name, description, set_json, test_json, id FROM `cases`')
             return rows
     }
     catch (e) {
@@ -76,7 +77,7 @@ const readSets = async (caseId, count) => {
             .promise()
             .query(
                 'SELECT elements, result, sets.set_id FROM `sets` LEFT JOIN `tests` ON sets.set_id=tests.set_id WHERE case_id=? LIMIT ?', 
-                [caseId, count > 0 ? counts : 10]) // TODO: pagination
+                [ caseId, count > 0 ? counts : 10 ]) // TODO: pagination
         return rows        
     }
     catch (e) {
@@ -116,7 +117,7 @@ const updateTest = async (setId, result) => {
         const { insertId } = await connection
             .execute(
                 'INSERT INTO `tests` (result, set_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE result=?, set_id=?', 
-                [result, setId, result, setId])
+                [ result, setId, result, setId ])
         return insertId
     }
     catch (e) {
