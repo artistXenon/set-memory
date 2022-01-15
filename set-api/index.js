@@ -1,18 +1,19 @@
 const r = require('express').Router()
+const { createSet, readSets, deleteSet } = require('../db')
 
 
-r.put('/:id', (q, s) => {
-    //create case
-    s.status(200).send('create set')
-})
-
-r.get('/:id', (q, s) => {
-    //get case
+r.get('/', (q, s) => {
+    //readSets
     s.status(200).send('case')
 })
 
+r.put('/:setId', (q, s) => {
+    //createSet
+    s.status(200).send('create set')
+})
+
 r.delete('/:id', (q, s) => {
-    //delete case
+    //deleteSet
     s.status(200).send('delete set')
 })
 

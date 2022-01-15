@@ -6,9 +6,7 @@ case: {
         description,
         set: [
             {
-                name: string,
-                isTested: bool,
-                isDisclosed: bool
+                name: string
             }
         ]
     },

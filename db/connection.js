@@ -44,10 +44,10 @@ const readCases = () => {
     }
 }
 
-const deleteCase = async (id) => {
+const deleteCase = async (caseId) => {
     try {
         await connection
-            .execute('DELETE FROM `cases` WHERE id=?', [ id ])
+            .execute('DELETE FROM `cases` WHERE id=?', [ caseId ])
         return true
     }
     catch (e) {
@@ -56,12 +56,12 @@ const deleteCase = async (id) => {
     }
 }
 
-const createSet = (id, set) => {
+const createSet = (setId, setElements) => {
     try {
         const { insertId } = await connection
             .execute(
                 'INSERT INTO `sets` (elements, set_id) VALUES (?, ?)', 
-                [ set, id ])
+                [ setElements, setId ])
         return insertId
     }
     catch (e) {
@@ -91,9 +91,9 @@ const readSets = (caseId, count) => {
     }
 }
 
-const deleteSet = async (id) => {
+const deleteSet = async (setId) => {
     try {
-        await connection.execute('DELETE FROM `sets` WHERE id=?', [ id ])
+        await connection.execute('DELETE FROM `sets` WHERE id=?', [ setId ])
         return true
     }
     catch (e) {
@@ -102,13 +102,24 @@ const deleteSet = async (id) => {
     }
 }
 
-const updateTest = (result) => {
+const updateTest = (setId, result) => {
+    try {
+        const { insertId } = await connection
+            .execute(
+                'INSERT INTO `tests` (result, set_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE result=?, set_id=?', 
+                [result, setId, result, setId])
+        return insertId
+    }
+    catch (e) {
+        console.log(e)
+        throw new Error('INSERTION ERROR')
+    }
 //todo: create table tests, update or insert
 }
 
-const flushTest = async (id) => {
+const flushTest = async (setId) => {
     try {
-        await connection.execute('DELETE FROM `tests` WHERE case_id=?', [ id ])
+        await connection.execute('DELETE FROM `tests` WHERE set_id=?', [ setId ])
         return true
     }
     catch (e) {

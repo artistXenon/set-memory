@@ -1,21 +1,23 @@
 const r = require('express').Router()
 const set_api = require('../set-api')
+const { createCase, readCases, deleteCase } = require('../db')
 
-r.put('/:name', (q, s) => {
-    //create case
-    s.status(200).send('create case')
-})
 
-r.get('/:name/:case', (q, s) => {
-    //get case
+r.get('/', (q, s) => {
+    //readCases
     s.status(200).send('case')
 })
 
-r.delete('/:name', (q, s) => {
-    //delete case
+r.put('/:id', (q, s) => {
+    //createCase
+    s.status(200).send('create case')
+})
+
+r.delete('/:id', (q, s) => {
+    //deleteCase
     s.status(200).send('delete case')
 })
 
-r.use('/:name/set', set_api)
+r.use('/:caseId/set', set_api)
 
 module.exports = r
