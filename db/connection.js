@@ -31,7 +31,7 @@ const createCase = async (name, desc, set) => {
     }
 }
 
-const readCases = () => {
+const readCases = async () => {
     try {
         const [ rows ] = await connection
             .promise()
@@ -56,7 +56,7 @@ const deleteCase = async (caseId) => {
     }
 }
 
-const createSet = (setId, setElements) => {
+const createSet = async (setId, setElements) => {
     try {
         const { insertId } = await connection
             .execute(
@@ -70,20 +70,14 @@ const createSet = (setId, setElements) => {
     }
 }
 
-const readSets = (caseId, count) => {
+const readSets = async (caseId, count) => {
     try {
-        if (count > 0) {
-            const [ rows ] = await connection
-                .promise()
-                .query('SELECT elements, set_id FROM `sets` WHERE case_id=? LIMIT ?', [caseId, count]) // generate test. TODO: exclude resolved set.
-            return rows
-        }
-        else {
-            const [ rows ] = await connection
-                .promise()
-                .query('SELECT elements, set_id FROM `sets` WHERE case_id=?', [caseId]) // generate test. TODO: exclude resolved set.
-            return rows
-        }
+        const [ rows ] = await connection
+            .promise()
+            .query(
+                'SELECT elements, result, sets.set_id FROM `sets` LEFT JOIN `tests` ON sets.set_id=tests.set_id WHERE case_id=? LIMIT ?', 
+                [caseId, count > 0 ? counts : 10]) // TODO: pagination
+        return rows        
     }
     catch (e) {
         console.log(e)
@@ -102,7 +96,22 @@ const deleteSet = async (setId) => {
     }
 }
 
-const updateTest = (setId, result) => {
+const readTest = async (caseId, count) => {
+    try {
+        const [ rows ] = await connection
+            .promise()
+            .query(
+                'SELECT elements, sets.set_id FROM `sets` LEFT JOIN `tests` ON sets.set_id=tests.set_id WHERE case_id=? LIMIT ?', 
+                [caseId, count > 0 ? counts : 10]) // TODO: exclude resolved set.
+        return rows        
+    }
+    catch (e) {
+        console.log(e)
+        throw new Error('READ ERROR')
+    }
+}
+
+const updateTest = async (setId, result) => {
     try {
         const { insertId } = await connection
             .execute(
@@ -131,5 +140,5 @@ const flushTest = async (setId) => {
 module.exports = {
     createCase, readCases, deleteCase,
     createSet, readSets, deleteSet,
-    updateTest, flushTest
+    readTest, updateTest, flushTest
 }

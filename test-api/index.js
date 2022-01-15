@@ -1,5 +1,5 @@
 const r = require('express').Router()
-const { createSet, readSets, deleteSet } = require('../db')
+const { updateTest, flushTest } = require('../db')
 
 
 r.get('/', (q, s) => {
@@ -20,7 +20,7 @@ r.get('/', (q, s) => {
     }
 })
 
-r.put('/', (q, s) => {
+r.put('/:setId', (q, s) => {
     try {
         const id = await createSet(/* TODO: body */)
         return s
@@ -38,20 +38,8 @@ r.put('/', (q, s) => {
 })
 
 r.delete('/:id', (q, s) => {
-    try {
-        const id = await deleteSet(/* TODO: body */)
-        return s
-            .status(200)
-            .json({
-                result: id,
-                success: true
-            })
-    }
-    catch (e) {
-        return s.status(500).json({
-            success: false
-        })
-    }
+    //deleteSet
+    s.status(200).send('delete set')
 })
 
 module.exports = r
