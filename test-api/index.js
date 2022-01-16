@@ -1,11 +1,16 @@
 const r = require('express').Router()
+const { set } = require('express/lib/application')
 const { readTest, updateTest, flushTest } = require('../db')
 
 
 r.get('/', async (q, s) => {
-    //query test size
     try {
-        const rows = await readSets(/* TODO: case id */)
+        const caseId = q.caseId
+        const count = q.query?.count
+        if (!caseId) throw new Error('malformatted body')
+        const rows = await readTest(caseId, count)
+        for (const row of rows) row.elements = JSON.parse(row.elements)
+        
         return s
             .status(200)
             .json({
@@ -14,32 +19,44 @@ r.get('/', async (q, s) => {
             })
     }
     catch (e) {
-        return s.status(500).json({
-            success: false
-        })
+        return s
+            .status(500)
+            .json({ success: false })
     }
 })
 
-r.put('/:setId', async (q, s) => {
+r.post('/:setId', async (q, s) => {
     try {
-        const id = await createSet(/* TODO: body */)
+        const setId = q.params?.setId
+        const result = q.body?.result
+        if (!setId || !result) throw new Error('malformatted body')
+        await updateTest(setId, result)
         return s
             .status(200)
-            .json({
-                result: id,
-                success: true
-            })
+            .json({ success: true })
     }
     catch (e) {
-        return s.status(500).json({
-            success: false
-        })
+        console.log(e)
+        return s
+            .status(500)
+            .json({ success: false })
     }
 })
 
-r.delete('/:id', async (q, s) => {
-    //deleteSet
-    s.status(200).send('delete set')
+r.delete('/', async (q, s) => {
+    try {
+        const caseId = q.caseId
+        if (!caseId) throw new Error('malformatted body')
+        await flushTest(caseId)
+        return s
+            .status(200)
+            .json({ success: true })
+    }
+    catch (e) {
+        return s
+            .status(500)
+            .json({ success: false })
+    }
 })
 
 module.exports = r

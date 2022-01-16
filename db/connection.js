@@ -99,11 +99,18 @@ const deleteSet = async (setId) => {
 
 const readTest = async (caseId, count) => {
     try {
+        const [[{ test_json }]] = await connection
+            .promise()
+            .query('SELECT test_json FROM `cases` WHERE id=?', [ caseId ])
+        const testCount = JSON.parse(test_json).length
+        if (isNaN(testCount)) throw new Error('malformatted case')
+        const fullResult = (1 << testCount) - 1
+
         const [ rows ] = await connection
             .promise()
             .query(
-                'SELECT elements, sets.set_id FROM `sets` LEFT JOIN `tests` ON sets.set_id=tests.set_id WHERE case_id=? LIMIT ?', 
-                [caseId, count > 0 ? counts : 10]) // TODO: exclude resolved set.
+                'SELECT elements, sets.set_id, result FROM `sets` LEFT JOIN `tests` ON sets.set_id=tests.set_id WHERE case_id=? AND (result<? OR result IS NULL) LIMIT ?', 
+                [caseId, fullResult, count > 0 ? counts : 10]) // TODO: exclude resolved set.
         return rows        
     }
     catch (e) {
@@ -116,7 +123,7 @@ const updateTest = async (setId, result) => {
     try {
         const { insertId } = await connection
             .execute(
-                'INSERT INTO `tests` (result, set_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE result=?, set_id=?', 
+                'INSERT INTO `tests` (result, set_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE result= result | ?, set_id=?', 
                 [ result, setId, result, setId ])
         return insertId
     }
@@ -124,12 +131,11 @@ const updateTest = async (setId, result) => {
         console.log(e)
         throw new Error('INSERTION ERROR')
     }
-//todo: create table tests, update or insert
 }
 
-const flushTest = async (setId) => {
+const flushTest = async (caseId) => {
     try {
-        await connection.execute('DELETE FROM `tests` WHERE set_id=?', [ setId ])
+        await connection.execute('DELETE `tests` FROM `tests` INNER JOIN `sets` ON sets.set_id=tests.set_id WHERE case_id=?', [ caseId ])
         return true
     }
     catch (e) {

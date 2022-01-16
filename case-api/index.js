@@ -21,7 +21,7 @@ r.get('/', async (q, s) => {
     }
 })
 
-r.put('/', async (q, s) => {
+r.post('/', async (q, s) => {
     try {
         const name = q.body?.name
         const desc = q.body?.desc ?? ''
