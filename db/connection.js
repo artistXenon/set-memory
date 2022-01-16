@@ -58,12 +58,12 @@ const deleteCase = async (caseId) => {
 
 const createSet = async (caseId, setElements) => {
     try {
-        const { insertId } = await connection
+        const result = await connection
             .promise()
             .query(
                 'INSERT INTO `sets` (elements, case_id) VALUES (?, ?)', 
                 [ setElements, caseId ])
-        return insertId
+        return result
     }
     catch (e) {
         console.log(e)
@@ -88,7 +88,7 @@ const readSets = async (caseId, count) => {
 
 const deleteSet = async (setId) => {
     try {
-        await connection.execute('DELETE FROM `sets` WHERE id=?', [ setId ])
+        await connection.execute('DELETE FROM `sets` WHERE set_id=?', [ setId ])
         return true
     }
     catch (e) {

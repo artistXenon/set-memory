@@ -43,6 +43,7 @@ r.put('/', async (q, s) => {
     }
 })
 
+
 r.delete('/:id', async (q, s) => {
     try {
         const success = await deleteCase(q.params.id)
@@ -60,7 +61,14 @@ r.delete('/:id', async (q, s) => {
     }
 })
 
-r.use('/:caseId/set', set_api)
-r.use('/:caseId/test', test_api)
+r.use('/:caseId/sets', (q, s, n) => {
+    q.caseId = q.params.caseId
+    return set_api(q, s, n)
+})
+
+r.use('/:caseId/tests', (q, s, n) => {
+    q.caseId = q.params.caseId
+    return test_api(q, s, n)
+})
 
 module.exports = r

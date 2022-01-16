@@ -4,13 +4,13 @@ const { createSet, readSets, deleteSet } = require('../db')
 
 r.get('/', async (q, s) => {
     try {
-        const caseId = q.params?.caseId
+        const caseId = q.caseId
         if (!caseId) throw new Error('malformatted body')
-        const rows = await readSets(caseId)
+        const elements = await readSets(caseId)
         return s
             .status(200)
             .json({
-                result: rows,
+                result: elements,
                 success: true
             })
     }
@@ -23,14 +23,15 @@ r.get('/', async (q, s) => {
 
 r.put('/', async (q, s) => {
     try {
-        const caseId = q.params?.caseId
+        const caseId = q.caseId
         const elements = q.body?.elements
         if (!caseId || !elements) throw new Error('malformatted body')
-        const id = await createSet(caseId, elements)
+        //TODO: check if element is well formatted based on set info from case
+        const [{ insertId }] = await createSet(caseId, JSON.stringify(elements))
         return s
             .status(200)
             .json({
-                result: id,
+                result: insertId,
                 success: true
             })
     }
