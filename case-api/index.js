@@ -17,9 +17,7 @@ r.get('/', async (q, s) => {
     catch (e) {
         return s
             .status(500)
-            .json({
-                success: false
-            })
+            .json({ success: false })
     }
 })
 
@@ -39,9 +37,9 @@ r.put('/', async (q, s) => {
             })
     }
     catch (e) {
-        return s.status(500).json({
-            success: false
-        })
+        return s
+            .status(500)
+            .json({ success: false })
     }
 })
 
@@ -56,9 +54,9 @@ r.delete('/:id', async (q, s) => {
             })
     }
     catch (e) {
-        return s.status(500).json({
-            success: false
-        })
+        return s
+            .status(500)
+            .json({ success: false })
     }
 })
 
