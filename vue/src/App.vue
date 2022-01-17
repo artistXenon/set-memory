@@ -1,10 +1,27 @@
 <template>
   <div id="nav">
-    <router-link to="/">Home</router-link> |
+    <a class="do-reset">Home</a>
     <router-link to="/about">About</router-link>
   </div>
   <router-view/>
 </template>
+
+<script>
+import axios from 'axios'
+
+export default {
+  name: 'App',
+  data() {
+    return {
+
+    }
+  },
+  async mounted() {
+    console.log(this.$api_domain + '/api/cases')
+    console.log(await axios.get(this.$api_domain + '/api/cases'))
+  }
+}
+</script>
 
 <style lang="scss">
 #app {
@@ -19,6 +36,9 @@
   padding: 30px;
 
   a {
+    text-decoration: none;
+    margin-left: 0.3rem;
+    margin-right: 0.3rem;
     font-weight: bold;
     color: #2c3e50;
 
