@@ -1,5 +1,6 @@
 const e_app = require('express')
 const bodyParser = require('body-parser')
+const history = require('connect-history-api-fallback')
 const case_api = require('./case-api')
 
 const app = e_app()
@@ -8,11 +9,10 @@ const port = 3003
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.use('/cases', case_api)
+app.use(history())
+app.use('/api/cases', case_api)
 
-app.use('/', (q, s) => {
-    s.status(200).send('😇')
-})
+app.use('/', e_app.static('./vue/dist'))
 
 
 app.use((e, q, s, n) => {
@@ -20,4 +20,4 @@ app.use((e, q, s, n) => {
     s.status(500).send('')
 })
 
-app.listen(port, () => console.log('started'))
+app.listen(port, _ => console.log('started: ' + port))
