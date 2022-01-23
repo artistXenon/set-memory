@@ -1,7 +1,9 @@
 <template>
   <div id="nav">
-    <a class="do-reset">Home</a>
-    <router-link to="/about">About</router-link>
+    <a class="do-reset" @click="reset">Home</a>    
+    <router-link v-for="(item, index) in $state.cases" :to="'/cases/' + item.id">
+      {{ item.name }}
+    </router-link>
   </div>
   <router-view/>
 </template>
@@ -12,13 +14,23 @@ import axios from 'axios'
 export default {
   name: 'App',
   data() {
-    return {
-
-    }
+    return {}
   },
   async mounted() {
-    console.log(this.$api_domain + '/api/cases')
-    console.log(await axios.get(this.$api_domain + '/api/cases'))
+    this.reset()
+  },
+  methods: {
+    reset: async function() {
+      try {
+        const r = await axios.get(this.$api_domain + '/api/cases')
+        const { result } = r.data
+        this.$store.setCases(result)
+      }
+      catch (e) {
+        console.log(e)
+        this.$store.setCases([])
+      }    
+    }
   }
 }
 </script>
