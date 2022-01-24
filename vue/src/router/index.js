@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Case from '../views/Case.vue'
+import Sets from '../components/Sets.vue'
+import Tests from '../components/Tests.vue'
 
 const routes = [
   {
@@ -13,7 +15,8 @@ const routes = [
     name: 'Case',
     component: Case,
     children: [
-      { path: '', component: '' }
+      { path: '', component: Sets },
+      { path: 'test', component: Tests },
     ]
   },
   {
