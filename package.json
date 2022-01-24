@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon ."
+    "test:b": "nodemon .",
+    "test:f": "npm run serve --prefix ./vue"
   },
   "repository": {
     "type": "git",
