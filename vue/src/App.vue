@@ -1,6 +1,6 @@
 <template>
   <div id="nav">
-    <a class="do-reset" @click="reset">Home</a>    
+    <a class="do-reset" @click="toHome">Home</a>    
     <router-link v-for="(item, index) in $state.cases" :to="'/cases/' + item.id">
       {{ item.name }}
     </router-link>
@@ -20,6 +20,10 @@ export default {
     this.reset()
   },
   methods: {
+    toHome: function() {
+      this.$router.push('/')
+      this.reset()
+    },
     reset: async function() {
       try {
         const r = await axios.get(this.$api_domain + '/api/cases')
@@ -53,10 +57,13 @@ export default {
     margin-right: 0.3rem;
     font-weight: bold;
     color: #2c3e50;
-
     &.router-link-exact-active {
       color: #42b983;
     }
+  }
+
+  a.do-reset {
+    cursor: pointer;
   }
 }
 </style>
