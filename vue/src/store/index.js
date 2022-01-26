@@ -11,10 +11,16 @@ const store = {
     state: reactive({
       cases: []
     }),
+
+    getCase(id) {
+      for (const c of this.state.cases) 
+        if (c.id === id) return c
+      return undefined
+    },
   
     setCases(newCases) {  
       this.state.cases = newCases
-      this._subscriber.filter(({ event }) => evemt === 'cases').forEach(({ cb }) => cb())
+      this._subscriber.filter(({ event }) => event === 'cases').forEach(({ cb }) => cb())
     },
 
     setListener(event, callback) {

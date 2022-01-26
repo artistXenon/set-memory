@@ -1,18 +1,49 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
+  <div class="sets">
+    
+    <!--show full set by pagination + interface to edit sets--> 
+    
     <h3>Sets</h3>
-    <ul>
-      
-    </ul>
+    <div class="test-var">
+      {{tests}}
+      <ul>
+        <li v-for="(item, index) in tests">
+        <!--{{sets[item[0]] + ' => ' + sets[item[1]]}}-->
+        {{item}}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Sets',
-  props: {
-    msg: String
+  data() {
+    return {
+      sets: [],
+      tests: []
+    }
+  },
+  mounted() {
+    this.$store.setListener('cases', this.onLoad.bind(this))
+    this.onLoad()
+  },
+  watch: {
+    $route(to, from) {
+      this.onLoad()
+    }
+  },
+  methods: {
+    onLoad: function() {
+      this.caseId = Number(this.$route.params.caseId)
+      const c = this.$store.getCase(this.caseId)
+      if (c) {
+        this.tests = JSON.parse(c.test_json)
+        this.sets = JSON.parse(c.set_json)
+        console.log(this.tests)
+      }
+    }
   }
 }
 </script>

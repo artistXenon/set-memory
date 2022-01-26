@@ -1,6 +1,6 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
+  <div class="test">
+      <!--test w/ config for test size & test form-->
     <h3>Tests</h3>
     <ul>
       
