@@ -9,6 +9,14 @@
         <p>
           {{caseDesc}}
         </p>
+      </div>      
+      <h2>Tests</h2>
+      <div class="test-var">
+        <ul>
+          <li v-for="(item, index) in tests">
+          {{setsDesc[item[0]].name + ' => ' + setsDesc[item[1]].name}}
+          </li>
+        </ul>
       </div>
     </div>
     <router-view></router-view>
@@ -28,6 +36,8 @@ export default {
       caseId: -1,
       caseName: undefined,
       caseDesc: undefined,
+      tests: [],
+      setsDesc: []
     }
   },
   mounted() {
@@ -46,9 +56,27 @@ export default {
       if (c) {
         this.caseName = c.name
         this.caseDesc = c.description
-      }
-      else console.log('err no case found ??')      
+        this.setsDesc = JSON.parse(c.set_json)
+        this.tests = JSON.parse(c.test_json)
+      }  
     }
   }
 }
 </script>
+
+<style scoped lang="scss">
+h2 {
+  margin: 40px 0 0;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+li {
+  display: inline-block;
+  margin: 0 10px;
+}
+a {
+  color: #42b983;
+}
+</style>
