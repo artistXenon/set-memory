@@ -76,7 +76,7 @@ const readSets = async (caseId, count) => {
         const [ rows ] = await connection
             .promise()
             .query(
-                'SELECT elements, result, sets.set_id FROM `sets` LEFT JOIN `tests` ON sets.set_id=tests.set_id WHERE case_id=? LIMIT ?', 
+                'SELECT elements, result, sets.set_id FROM `sets` LEFT JOIN `tests` ON sets.set_id=tests.set_id WHERE case_id=? ORDER BY elements ASC LIMIT ?', 
                 [ caseId, count > 0 ? counts : 10 ]) // TODO: pagination review tests in progress
         return rows        
     }
