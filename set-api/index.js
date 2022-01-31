@@ -7,6 +7,7 @@ r.get('/', async (q, s) => {
         const caseId = q.caseId
         if (!caseId) throw new Error('malformatted body')
         const elements = await readSets(caseId)
+        for (const element of elements) element.elements = JSON.parse(element.elements)
         return s
             .status(200)
             .json({
@@ -15,6 +16,7 @@ r.get('/', async (q, s) => {
             })
     }
     catch (e) {
+        console.log(e)
         return s
             .status(500)
             .json({ success: false })
