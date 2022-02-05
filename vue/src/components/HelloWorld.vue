@@ -3,7 +3,7 @@
     <h1>Set-memory application</h1>
     <h3>Add case</h3>
     <div class="create-case-form">
-      <form action="javascript:void(0);">
+      <form action="javascript:void(0)">
         <div class="case-create-name">
           <h5>Case name</h5> <input type="text" name="name" id="name"/>
         </div>
