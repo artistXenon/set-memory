@@ -174,10 +174,6 @@ div.create-case-form {
   width: 90%;
   background-color: #ccc;
 }
-
-div.case-create-name * {
-}
-
 .test-component {
   width: 10%
 }
