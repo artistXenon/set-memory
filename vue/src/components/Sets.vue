@@ -6,7 +6,7 @@
     <h2>Sets</h2>
     <div class="set-var">
       <ul>
-        <li v-for="(item, index) in sets">
+        <li v-for="(item, index) in sets" v-bind:key="index">
         {{item.elements}}
         </li>
       </ul>

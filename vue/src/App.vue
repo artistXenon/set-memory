@@ -1,7 +1,7 @@
 <template>
   <div id="nav">
     <a class="do-reset" @click="toHome">Home</a>    
-    <router-link v-for="(item, index) in $state.cases" :to="'/cases/' + item.id">
+    <router-link v-for="(item, index) in $state.cases" :to="'/cases/' + item.id" v-bind:key="index">
       {{ item.name }}
     </router-link>
   </div>

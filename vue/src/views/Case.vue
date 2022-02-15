@@ -13,7 +13,7 @@
       <h2>Tests</h2>
       <div class="test-var">
         <ul>
-          <li v-for="(item, index) in tests">
+          <li v-for="(item, index) in tests" v-bind:key="index">
           {{setsDesc[item[0]].name + ' => ' + setsDesc[item[1]].name}}
           </li>
         </ul>
