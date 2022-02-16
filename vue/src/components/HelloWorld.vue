@@ -116,9 +116,8 @@ export default {
             tests: this.tests
           }
         )
-        console.log(r)
         this.$router.push('/')
-        this.reset()
+        this.$store.resetCases()
       }
       catch (e) {
         console.log(e)

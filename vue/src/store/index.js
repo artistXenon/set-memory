@@ -1,4 +1,7 @@
 import { reactive } from 'vue'
+import axios from 'axios'
+
+import global from '@/global'
 
 const store = {
     _subscriber: [
@@ -21,6 +24,18 @@ const store = {
     setCases(newCases) {  
       this.state.cases = newCases
       this._subscriber.filter(({ event }) => event === 'cases').forEach(({ cb }) => cb())
+    },
+
+    async resetCases() {
+      try {
+        const r = await axios.get(global.$api_domain + '/api/cases')
+        const { result } = r.data
+        this.setCases(result)
+      }
+      catch (e) {
+        console.log(e)
+        this.setCases([])
+      }    
     },
 
     setListener(event, callback) {

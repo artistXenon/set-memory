@@ -4,6 +4,7 @@
     <div class="case-title">
       <div class="case-title-name">
         <h1>{{caseName}}</h1>
+        <button @click="removeCase">delete</button>
       </div>
       <div class="case-title-body">
         <p>
@@ -27,6 +28,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 
 export default {
   name: 'Case',
@@ -59,6 +61,16 @@ export default {
         this.setsDesc = JSON.parse(c.set_json)
         this.tests = JSON.parse(c.test_json)
       }  
+    },
+    removeCase: async function() {
+      try {
+        await axios.delete(this.$api_domain + `/api/cases/${this.caseId}`)
+        this.$router.push('/')
+        this.$store.resetCases()
+      }
+      catch (e) {
+        console.log(e)
+      }
     }
   }
 }
@@ -78,5 +90,19 @@ li {
 }
 a {
   color: #42b983;
+}
+
+.case-title-name {
+  * {
+    display: inline-block;
+  }
+
+  button {
+    margin: 0.9rem;
+    background-color: crimson;
+    font-weight: bold;
+    color: white;
+  }
+  
 }
 </style>
