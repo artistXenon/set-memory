@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test:b": "nodemon .",
-    "test:f": "npm run serve --prefix ./vue"
+    "test:f": "npm run serve --prefix ./vue",
+    "build": "npm run build --prefix ./vue"
   },
   "repository": {
     "type": "git",
