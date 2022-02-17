@@ -94,7 +94,10 @@ export default {
       if (!sets || sets.length < 2) return 'Please add 2 or more sets'
       if (!tests || tests.length === 0) return 'Please add a test'
       for (let i in tests) {
-        if (tests[i][0] >= sets.length || tests[i][1] >= sets.length) return 'There are non existing set included: test index ' + i
+        if (
+          tests[i][0] >= sets.length || tests[i][1] >= sets.length ||
+          tests[i][0] < 0 || tests[i][1] < 0
+        ) return 'There are non existing set included: test index ' + i
         if (tests[i][0] === tests[i][1]) return 'Tests can not be made to identical fields: test ' + i
         for (let j = i + 1; j < tests.length; j++) {
           if (
