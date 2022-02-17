@@ -15,7 +15,9 @@
       <div class="test-var">
         <ul>
           <li v-for="(item, index) in tests" v-bind:key="index">
-          {{setsDesc[item[0]].name + ' => ' + setsDesc[item[1]].name}}
+          <router-link :to="'/test/' + index">
+            {{setsDesc[item[0]].name + ' ➡️ ' + setsDesc[item[1]].name}}
+          </router-link>
           </li>
         </ul>
       </div>
@@ -104,5 +106,16 @@ a {
     color: white;
   }
   
+}
+
+a {
+  text-decoration: none;
+  margin-left: 0.3rem;
+  margin-right: 0.3rem;
+  font-weight: bold;
+  color: #2c3e50;
+  &.router-link-exact-active {
+    color: #42b983;
+  }
 }
 </style>
