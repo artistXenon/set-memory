@@ -9,14 +9,14 @@
           <label for="name">
             <h5>Case name</h5> 
           </label>
-          <input type="text" name="name" id="name" v-model="name"/>
+          <input type="text" name="name" id="name" v-model="data.name"/>
         </div>
         <hr/>
         <div class="case-create-desc">
           <label for="desc">
             <h5>Case description</h5>
           </label> 
-          <textarea id="desc" name="desc" maxlength="500" rows="4" v-model="desc"/>
+          <textarea id="desc" name="desc" maxlength="500" rows="4" v-model="data.desc"/>
         </div>
         <hr/>
           <h5>Component sets</h5> 
@@ -26,9 +26,9 @@
               +
             </div>
           </li>   
-          <li v-for="(item, index) in sets" v-bind:key="index">
+          <li v-for="(item, index) in data.sets" v-bind:key="index">
             {{index}}
-              <input type="text" id="set_item" v-model="sets[index].name"/>
+              <input type="text" id="set_item" v-model="data.sets[index].name"/>
               <button @click="removeSet(index)">-</button>
           </li>       
         </ul>
@@ -40,10 +40,10 @@
               +
             </div>
           </li>   
-          <li v-for="(item, index) in tests" v-bind:key="index" class="case-test-item">
-              <input type="number" class="test-component" id="test_from" v-model="tests[index][0]"/>
+          <li v-for="(item, index) in data.tests" v-bind:key="index" class="case-test-item">
+              <input type="number" class="test-component" id="test_from" v-model="data.tests[index][0]"/>
               ➡️
-              <input type="number" class="test-component" id="test_to" v-model="tests[index][1]"/>
+              <input type="number" class="test-component" id="test_to" v-model="data.tests[index][1]"/>
               <button @click="removeTest(index)">-</button>
           </li>       
         </ul>
@@ -63,10 +63,12 @@ export default {
   name: 'HelloWorld',
   data() {
     return {
-      name: '',
-      desc: '',
-      tests: [],
-      sets: [],
+      data: {
+        name: '',
+        desc: '',
+        tests: [],
+        sets: []
+      },
       error: ''
     }
   },
@@ -74,29 +76,30 @@ export default {
   },
   methods: {
     addSet: function() {
-      this.sets.push({ name: `set_${this.sets.length + 1}` })
+      this.data.sets.push({ name: `set_${this.data.sets.length + 1}` })
     },
     removeSet: function(index) {
-      this.sets.splice(index, 1)
+      this.data.sets.splice(index, 1)
     },
     addTest: function() {
-      this.tests.push([0, 0])
+      this.data.tests.push([0, 0])
     },
     removeTest: function(index) {
-      this.tests.splice(index, 1)
+      this.data.tests.splice(index, 1)
     },
     formCheck: function() {
       this.error = ''
-      if (!this.name) return 'Please type case name'
-      if (!this.sets || this.sets.length < 2) return 'Please add 2 or more sets'
-      if (!this.tests || this.tests.length === 0) return 'Please add a test'
-      for (let i in this.tests) {
-        if (this.tests[i][0] >= this.sets.length || this.tests[i][1] >= this.sets.length) return 'There are non existing set included: test index ' + i
-        if (this.tests[i][0] === this.tests[i][1]) return 'Tests can not be made to identical fields: test ' + i
-        for (let j = i + 1; j < this.tests.length; j++) {
+      const { name, sets, tests } = this.data
+      if (!name) return 'Please type case name'
+      if (!sets || sets.length < 2) return 'Please add 2 or more sets'
+      if (!tests || tests.length === 0) return 'Please add a test'
+      for (let i in tests) {
+        if (tests[i][0] >= sets.length || tests[i][1] >= sets.length) return 'There are non existing set included: test index ' + i
+        if (tests[i][0] === tests[i][1]) return 'Tests can not be made to identical fields: test ' + i
+        for (let j = i + 1; j < tests.length; j++) {
           if (
-            this.tests[i][0] === this.tests[j][0] && 
-            this.tests[i][1] === this.tests[j][1]) {
+            tests[i][0] === tests[j][0] && 
+            tests[i][1] === tests[j][1]) {
               return `Identical tests are found: test ${i}, ${j}`
           }         
         }
@@ -107,15 +110,7 @@ export default {
       if (this.error) return
 
       try {
-        const r = await axios.post(
-          this.$api_domain + '/api/cases', 
-          {
-            name: this.name,
-            desc: this.desc,
-            sets: this.sets,
-            tests: this.tests
-          }
-        )
+        const r = await axios.post(this.$api_domain + '/api/cases', this.data)
         this.$router.push('/')
         this.$store.resetCases()
       }
