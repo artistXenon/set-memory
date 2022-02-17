@@ -16,7 +16,7 @@ const routes = [
     component: Case,
     children: [
       { path: '', component: Sets },
-      { path: 'test', component: Tests },
+      { path: 'test/:testId', component: Tests },
     ]
   },
 ]
