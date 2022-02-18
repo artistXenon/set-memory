@@ -60,7 +60,7 @@
 import axios from 'axios'
 
 export default {
-  name: 'HelloWorld',
+  name: 'CreateCase',
   data() {
     return {
       data: {
