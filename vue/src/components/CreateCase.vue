@@ -72,8 +72,6 @@ export default {
       error: ''
     }
   },
-  mounted() {
-  },
   methods: {
     addSet: function() {
       this.data.sets.push({ name: `set_${this.data.sets.length + 1}` })
