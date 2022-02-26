@@ -1,7 +1,7 @@
 <template>
   <div class="test">
       <!--test w/ config for test size & test form-->
-    <h3>Tests</h3>
+    <h3>Test</h3>
     <ul>
       
     </ul>
@@ -11,9 +11,6 @@
 <script>
 export default {
   name: 'Tests',
-  props: {
-    msg: String
-  }
 }
 </script>
 

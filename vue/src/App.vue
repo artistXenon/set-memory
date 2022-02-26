@@ -57,7 +57,7 @@ export default {
     margin-right: 0.3rem;
     font-weight: bold;
     color: #2c3e50;
-    &.router-link-exact-active {
+    &.router-link-active {
       color: #42b983;
     }
   }
