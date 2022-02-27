@@ -30,6 +30,11 @@ const store = {
       try {
         const r = await axios.get(global.$api_domain + '/api/cases')
         const { result } = r.data
+
+        for (let caseItem of result) {
+          caseItem.set_json = JSON.parse(caseItem.set_json)
+          caseItem.test_json = JSON.parse(caseItem.test_json)
+        }
         this.setCases(result)
       }
       catch (e) {
