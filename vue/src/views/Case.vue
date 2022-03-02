@@ -60,8 +60,8 @@ export default {
       if (c) {
         this.caseName = c.name
         this.caseDesc = c.description
-        this.setsDesc = c.set_json
-        this.tests = c.test_json
+        this.setsDesc = JSON.parse(c.set_json)
+        this.tests = JSON.parse(c.test_json)
       }  
     },
     removeCase: async function() {
