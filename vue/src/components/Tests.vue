@@ -11,6 +11,24 @@
 <script>
 export default {
   name: 'Tests',
+  data() {
+    return {
+      tests: [],
+      testNow: -1
+    }
+  },
+  mounted() {
+
+  },
+  watch: {
+    $route(to, from) {
+      this.onLoad()
+    }
+  },
+  methods: {
+    onLoad: async function() {},
+    updateResult: async function() {}
+  }
 }
 </script>
 
