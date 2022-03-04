@@ -7,6 +7,10 @@ const { createCase, readCases, deleteCase } = require('../db')
 r.get('/', async (q, s) => {
     try {
         const rows = await readCases()
+        for (const row of rows) {
+            row.set_json = JSON.parse(row.set_json)
+            row.test_json = JSON.parse(row.test_json)
+        }
         return s
             .status(200)
             .json({

@@ -69,7 +69,7 @@ export default {
       const caseId = Number(this.$route.params.caseId)
       const c = this.$store.getCase(caseId)
       if (c) {
-        this.setsDesc = JSON.parse(c.set_json)
+        this.setsDesc = c.set_json
         try {
           const r = await axios.get(this.$api_domain + `/api/cases/${caseId}/sets`)
           const { result } = r.data
